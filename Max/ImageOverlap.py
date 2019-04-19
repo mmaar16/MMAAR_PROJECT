@@ -4,12 +4,16 @@ sys.path.insert(0, '../')
 from Aiste_Kiseliovaite import PythonCSVRead
 
 
-def changeRGBA(clusterPointArray, clusterNo, RGBA):
+def changeRGBA(clusterPointArray):
     for i in clusterPointArray:
-        if clusterNo == int(i[1]):
-            for j in range(int(i[2]), int(i[4])):
-                for k in range(int(i[3]), int(i[5])):
-                    pixelMap[j, k] = RGBA
+        for j in range(int(i[2]), int(i[4])):
+            for k in range(int(i[3]), int(i[5])):
+                if(j >= image.height or k >= image.width):
+                    continue
+                if int(i[15]) == 1:
+                    pixelMap[j, k] = COLOR_1
+                else:
+                    pixelMap[j, k] = COLOR_2
 
 
 def changeAlpha(newAlpha):
@@ -25,17 +29,21 @@ def displayImage():
 
     imageBlended.show()
 
+
 clusterPointArray = PythonCSVRead.read_file("Aiste_Kiseliovaite/tile2.csv")
 
 image = Image.open("Max/tile2.png")
 clusters = Image.open("Max/tile2_clusters.png")
 alpha = .8
 
+COLOR_1 = (120, 120, 255, 255)
+COLOR_2 = (255, 255, 0, 255)
+
 pixelMap = clusters.load()
 
-#testing the functions
+# testing the functions
 displayImage()
-changeRGBA(clusterPointArray, 761, (180, 180, 255, 255))
+changeRGBA(clusterPointArray)
 displayImage()
 alpha = changeAlpha(.5)
 displayImage()
