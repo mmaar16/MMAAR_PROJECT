@@ -21,13 +21,21 @@ def changeAlpha(newAlpha):
     return alpha
 
 
-def displayImage():
+def overlay():
     imageRGBA = image.convert("RGBA")
     clustersRGBA = clusters.convert("RGBA")
 
-    imageBlended = Image.blend(imageRGBA, clustersRGBA, alpha)
+    return Image.blend(imageRGBA, clustersRGBA, alpha)
 
+
+def displayImage():
+    imageBlended = overlay()
     imageBlended.show()
+
+
+def saveImage():
+    imageBlended = overlay()
+    imageBlended.save("tile2_overlayed.png")
 
 
 clusterPointArray = PythonCSVRead.read_file("Aiste_Kiseliovaite/tile2.csv")
@@ -47,3 +55,4 @@ changeRGBA(clusterPointArray)
 displayImage()
 alpha = changeAlpha(.5)
 displayImage()
+saveImage()
