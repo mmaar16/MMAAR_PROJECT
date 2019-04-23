@@ -8,12 +8,12 @@ print "Content-Type: text/plain\r\n\r\n"
 print
 # Global variables.
 form = cgi.FieldStorage()
-COLOR_1 = (120, 120, 255, 255)
-COLOR_2 = (255, 255, 0, 255)
-CSV_FILE = "tile2.csv"
-MAIN_IMAGE = "tile2.png"
-CLUSTER_IMAGE = "tile2_clusters.png"
-IMAGE_NAME = "tile2_overlayed.png"
+COLOR_1 = (120, 120, 255)
+COLOR_2 = (255, 255, 0)
+CSV_FILE = "5_klasterizuoti_rezultatai.csv"
+MAIN_IMAGE = "1_TCGA__3C-AALI_orig.jpg"
+CLUSTER_IMAGE = "2_pred_TCGA_3C_AALI.jpg"
+IMAGE_NAME = "tile2_overlayed.jpg"
 HTML_FILE_NAME = "index.html"
 NEW_CSV_FILE = "new_file.csv"
 
@@ -42,7 +42,7 @@ def html_generate(picture_name, csv_file_name):
             htmlfile.write("<!DOCTYPE html>\n")
             htmlfile.write("<html>\n")
             htmlfile.write("<body>\n")
-            htmlfile.write('<img src=' + picture_name + ' width="1000" height="1000" usemap="#clustermap">\n')
+            htmlfile.write('<img src=' + picture_name + ' width="10000" height="10000" usemap="#clustermap">\n')
             htmlfile.write('<map name="clustermap">\n')
 
             lineno = 0
@@ -58,6 +58,7 @@ def html_generate(picture_name, csv_file_name):
             htmlfile.write("</body>\n")
             htmlfile.write("</html>\n")
             htmlfile.write(open("js.html", "r").read())
+
 
 ## Function updateCSVFile() updates the .CSV file.
 #  @param CSVFileName The file we read data from.
@@ -93,6 +94,8 @@ def updateCSVFile(CSVFileName, objectNo, clusterNo):
                 csv_writer.writerow(row)
         csv_writer.writerows(csv_reader)
 
+
+
 ## Function changeRGBA() colors the cluster in the image with one of the two colors, dependant on the clusterNo.
 #  @param clusterPointArray Generator of the data that was read from the .CSV file.
 #  @param image The image we draw the clusters on.
@@ -119,8 +122,8 @@ def changeAlpha(newAlpha):
 #  @param clusters The image which contains the clusters.
 #  @param alpha The alpha channel value.
 def overlay(image, clusters, alpha):
-    imageRGBA = image.convert("RGBA")
-    clustersRGBA = clusters.convert("RGBA")
+    imageRGBA = image.convert("RGB")
+    clustersRGBA = clusters.convert("RGB")
     return Image.blend(imageRGBA, clustersRGBA, alpha)
 
 ## Function saveImage() saves the overlayed images as a new image.
@@ -141,7 +144,8 @@ def overlayImage():
     changeRGBA(clusterPointArray, image, pixelMap)
     alpha = changeAlpha(.5)
     saveImage(image, clusters, alpha)
-    
+
+
 ## Function generateNewImage() calls functions updateCSVFile(), overlayImage(), html_generate().
 #  @param objectNo The number of the object that will be updated.
 #  @param clusterNo The new cluster number of the object that is being updated.

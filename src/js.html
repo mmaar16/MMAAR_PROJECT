@@ -4,22 +4,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 <script type="text/javascript">
+   var loading = 0;
 $(".points").on("click", function(e){
     e.preventDefault();
     $("#send_form").attr('action', 'test'+ e.target.id +'.php');
     $('#id_p').text(e.target.id);
     $('#obj_id').val(e.target.id);
     $('#cluster_no_p').text($(this).attr('cluster_no'));
-    
-    $("#ex1").modal();
+    if (loading == 0){
+    	$("#ex1").modal();
+    }
 });
 
 $( "#send_form" ).submit(function( event ) {
   event.preventDefault();
   var obj_id = $('#obj_id').val();
   var cluster_no = $('#cluster').find(":selected").val();
-  var url = "http://172.20.10.3/cgi-enabled/index.py?obj_id="+ obj_id +"&cluster_no=" + cluster_no;
-  
+  var url = "http://172.20.10.4/cgi-enabled/index.py?obj_id="+ obj_id +"&cluster_no=" + cluster_no;
+  $(':input[type="submit"]').prop('disabled', true);
+  $(':input[type="submit"]').val("Loading...");
   $.ajax({
   url: url,
   type:'GET',
