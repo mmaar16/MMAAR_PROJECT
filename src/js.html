@@ -1,0 +1,38 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
+<script type="text/javascript">
+$(".points").on("click", function(e){
+    e.preventDefault();
+    $("#send_form").attr('action', 'test'+ e.target.id +'.php');
+    $('#id_p').text(e.target.id);
+    $('#obj_id').val(e.target.id);
+    $('#cluster_no_p').text($(this).attr('cluster_no'));
+    
+    $("#ex1").modal();
+});
+
+$( "#send_form" ).submit(function( event ) {
+  event.preventDefault();
+  var obj_id = $('#obj_id').val();
+  var cluster_no = $('#cluster').find(":selected").val();
+  var url = "http://172.20.10.3/cgi-enabled/index.py?obj_id="+ obj_id +"&cluster_no=" + cluster_no;
+  
+  $.ajax({
+  url: url,
+  type:'GET',
+  xhrFields: {
+      withCredentials: true
+   },
+  crossDomain:true
+})
+  .done(function( data ) {
+    location.reload(true);
+  });
+});
+
+
+
+</script>
