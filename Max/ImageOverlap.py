@@ -35,7 +35,7 @@ def displayImage():
 
 def saveImage():
     imageBlended = overlay()
-    imageBlended.save("tile2_overlayed.png")
+    imageBlended.save("tile2_overlayed.tiff")
 
 
 clusterPointArray = PythonCSVRead.read_file("Aiste_Kiseliovaite/tile2.csv")
